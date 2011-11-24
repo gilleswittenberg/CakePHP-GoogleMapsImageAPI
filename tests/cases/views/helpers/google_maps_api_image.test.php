@@ -1,7 +1,7 @@
 <?php
 
 //Import the helper to be tested.
-//If the tested helper is using some other helper, like Html, 
+//If the tested helper is using some other helper, like Html,
 //it should be imported in this line, and instantialized in startTest().
 App::import('Helper', 'GoogleMapsImageApi.GoogleMapsImageApi');
 App::import('Helper', 'Html');
@@ -75,7 +75,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		$this->assertEqual($this->googleMapsImageApi->setMaptype('roadmap'), 'roadmap');
 		$this->assertEqual($this->googleMapsImageApi->setMaptype('Hybrid'), 'hybrid');
 	}
-	
+
 	public function testSetLanguage(){
 		$this->assertFalse($this->googleMapsImageApi->setLanguage(true));
 		$this->assertEqual($this->googleMapsImageApi->setLanguage('en'), 'en');
@@ -86,7 +86,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		// false
 		$this->assertFalse($this->googleMapsImageApi->setMarkerStyles('test'));
 		$this->assertFalse($this->googleMapsImageApi->setMarkerStyles(array()));
-		// size 
+		// size
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('size' => 'abcd')), false);
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('size' => 'tiny')), 'size:tiny');
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('size' => 'MID')), 'size:mid');
@@ -96,15 +96,15 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('color' => '0xff009933')), 'color:0xff009933');
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('color' => '0xFF0099')), 'color:0xff0099');
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('color' => 'ablue')), false);
-		// size 
+		// size
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('label' => 'abcd')), 'label:A');
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array('label' => '1')), 'label:1');
 		// compound
 		$this->assertEqual($this->googleMapsImageApi->setMarkerStyles(array(
-			'size' => 'tiny', 
-			'color' => 'Green', 
+			'size' => 'tiny',
+			'color' => 'Green',
 			'label' => 'a')
-			), 
+			),
 			'size:tiny%7Ccolor:green%7Clabel:A'
 		);
 	}
@@ -114,7 +114,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		$this->assertFalse($this->googleMapsImageApi->setMarker('test'));
 		$this->assertFalse($this->googleMapsImageApi->setMarker(array()));
 		$this->assertFalse($this->googleMapsImageApi->setMarker(array('icon' => 'http://www.example.com/image.jpg')));
-		
+
 		// location
 		$this->assertEqual($this->googleMapsImageApi->setMarker(array('location' => 'Brooklyn Bridge, NY')), array('location' => 'Brooklyn+Bridge%2C+NY'));
 		$this->assertEqual($this->googleMapsImageApi->setMarker(array('location' => array('latitude' => '4.587999', 'longitude' => '90.55'))), array('location' => '4.587999,90.55'));
@@ -125,7 +125,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 			array(
 				'location' => array('4.58799901', '90.5500'),
 				'icon' => 'http://www.example.com/image'
-			)), 
+			)),
 			array('location' => '4.587999,90.55',
 				'icon' => urlencode('http://www.example.com/image')
 			)
@@ -133,7 +133,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 	}
 
 	public function testSetMarkers(){
-		
+
 		// false
 		$this->assertFalse($this->googleMapsImageApi->setMarkers('tests'));
 		$this->assertFalse($this->googleMapsImageApi->setMarkers(array()));
@@ -146,7 +146,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 						'location' => array('4.58799901', '90.5500'),
 					),
 					array(
-						'location' => array('latitude' => '81.220099', 'longitude' => '8.567831')		
+						'location' => array('latitude' => '81.220099', 'longitude' => '8.567831')
 					)
 				),
 				'markerStyles' => array(
@@ -154,9 +154,9 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 					'color' => '0xFF3333'
 				)
 			)
-		), 
+		),
 		array(
-			'markerStyles' => 'size:tiny%7Ccolor:0xff3333',	
+			'markerStyles' => 'size:tiny%7Ccolor:0xff3333',
 			'markers' => array(
 				array('location' => '4.587999,90.55'),
 				array('location' => '81.220099,8.567831')
@@ -168,7 +168,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		// false
 		$this->assertFalse($this->googleMapsImageApi->setPathStyles('test'));
 		$this->assertFalse($this->googleMapsImageApi->setPathStyles(array()));
-		// weight 
+		// weight
 		$this->assertEqual($this->googleMapsImageApi->setPathStyles(array('weight' => '12')), 'weight:12');
 		// color
 		$this->assertEqual($this->googleMapsImageApi->setPathStyles(array('color' => 'blue')), 'color:blue');
@@ -185,11 +185,11 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		// compound
 		$this->assertEqual($this->googleMapsImageApi->setPathStyles(
 			array(
-				'weight' => '9', 
-				'color' => 'Green', 
+				'weight' => '9',
+				'color' => 'Green',
 				'fillcolor' => '0xFF0000'
 			)
-		), 
+		),
 		'weight:9%7Ccolor:green%7Cfillcolor:0xff0000'
 		);
 	}
@@ -198,7 +198,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		// false
 		$this->assertFalse($this->googleMapsImageApi->setPath('test'));
 		$this->assertFalse($this->googleMapsImageApi->setPath(array()));
-		
+
 		// location
 		$this->assertEqual($this->googleMapsImageApi->setPath(array('points' => array(array('5.678903', '56.45')))), '5.678903,56.45');
 		$this->assertEqual($this->googleMapsImageApi->setPath(array('points' => array(array('5.678903', '56.45'), array('50.678987', '90')))), '5.678903,56.45%7C50.678987,90');
@@ -215,8 +215,8 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 				array(
 					'paths' => array(
 						array('points' => array(
-							array('latitude' => '5.678903', 'longitude' => '56.45'), 
-							array('latitude' => '50.678987', 'longitude' => '90'), 
+							array('latitude' => '5.678903', 'longitude' => '56.45'),
+							array('latitude' => '50.678987', 'longitude' => '90'),
 							array('latitude' => '55.678987', 'longitude' => '90')
 							)
 						)
@@ -334,7 +334,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 					)
 				)
 			)
-		)), 
+		)),
 		array(
 			'paths' => array(
 				array(
@@ -366,12 +366,12 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		$this->assertEqual($this->googleMapsImageApi->staticMap(), '');
 		$this->assertEqual($this->googleMapsImageApi->staticMap(array(
 			'size' => '500x400',
-		)), 
+		)),
 		'');
 		// no validity check
 		$this->assertEqual($this->googleMapsImageApi->staticMap(array(
 			'size' => '500x400',
-		), null, false, false), 
+		), null, false, false),
 		'http://maps.google.com/maps/api/staticmap?size=500x400&sensor=false');
 		// createImage = false
 		$this->assertEqual($this->googleMapsImageApi->staticMap(array(
@@ -380,7 +380,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 				'latitude' => 60.556677,
 				'longitude' => 20.123456
 			)
-		)), 
+		)),
 		'http://maps.google.com/maps/api/staticmap?center=60.556677,20.123456&size=500x400&sensor=false');
 		// createImage = true, including htmlAttributes
 		$this->assertEqual($this->googleMapsImageApi->staticMap(array(
@@ -389,7 +389,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 				'latitude' => 60.556677,
 				'longitude' => 20.123456
 			)
-		), array('alt' => 'alttext', 'class' => 'google-maps'), true), 
+		), array('alt' => 'alttext', 'class' => 'google-maps'), true),
 		'<img src="http://maps.google.com/maps/api/staticmap?center=60.556677,20.123456&size=500x400&sensor=false" alt="alttext" class="google-maps" />');
 		// complex map
 		$this->googleMapsImageApi->resetParameters();
@@ -470,7 +470,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 					'lightness' => -25,
 					'visibility' => 'simplified'
 				)
-			)	
+			)
 		), null, true),
 		'<img src="http://maps.google.com/maps/api/staticmap?size=500x320&markers=size:tiny%7Ccolor:blue%7Clabel:G%7C62.345678,30.456677%7Cicon:http%3A%2F%2Fchart.apis.google.com%2Fchart%3Fchst%3Dd_map_pin_icon%26chld%3Dcafe%7C996600&markers=61.345678,31.456677&path=weight:0%7Cfillcolor:0xff000033%7C62.345678,30.456677%7C62.345678,31.456677%7C61.345678,31.456677%7C61.345678,30.456677&path=weight:5%7Ccolor:black%7C62,30%7C60,28&style=element:all%7Chue:0xff0000%7Clightness:-25%7Cvisibility:simplified&sensor=false" alt="" />');
 	}

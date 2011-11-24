@@ -3,17 +3,18 @@
  * CakePHP GoogleMapsImageAPI Helper
  * CakePHP GoogleMapsImageAPI Helper for Static Maps
  * Requires: CakePHP 1.3, PHP 5.2
- * 
+ *
  * @package helpers
  * @author Gilles Wittenberg
  * @copyright (c) 2011, Gilles Wittenberg
  * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @link http://code.google.com/apis/maps/documentation/staticmaps/ 
+ * @link http://code.google.com/apis/maps/documentation/staticmaps/
  *
+ * @todo Make CakePHP 2.0 ready
  * @todo Add support for Premium License
  */
 class GoogleMapsImageApiHelper extends AppHelper {
-	
+
 	/**
 	 * CakePHP Basic Helpers Html, Javascript
 	 * @var array
@@ -22,7 +23,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	public $helpers = array('Html');
 
 	/**
-	 * Static Google Maps base-url  
+	 * Static Google Maps base-url
 	 * @var string
 	 * @access private
 	 */
@@ -34,33 +35,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * @access private
 	 * @var array
 	 */
-	/*
-	private $featuredParameters = array(
-		'center',
-		'zoom',
-		'size',
-		'scale',
-		'format',
-		'maptype',
-		'language',
-	 	'markers' => array(
-			'markerStyles',
-			'markers' => array(
-				'icon',
-				'location'
-			)
-		),
-	 	'paths' => array(
-			'pathStyles',
-			'paths' => array(
-				'points' => array()
-			)
-		),
-	 	'visible',
-	 	'style',
-		'sensor'
-	);
-	*/
 	private $featuredParameters = array(
 		'center',
 		'zoom',
@@ -78,7 +52,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Array to hold all parameters
-	 * Finally a check will be made to see if required parameters are set. 
+	 * Finally a check will be made to see if required parameters are set.
 	 * Parameter sensor default set to false.
 	 * @var array
 	 * @access private
@@ -90,7 +64,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Maximum image width
 	 * Maximum image width allowed by Google Maps Image API.
-	 * This also takes scale into consideration.
 	 * @constant int MAX_WIDTH
 	 */
 	const MAX_WIDTH = 640;
@@ -98,7 +71,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Maximum image height
 	 * Maximum image height allowed by Google Maps Image API.
-	 * This also takes scale into consideration
 	 * @constant int MAX_HEIGHT
 	 */
 	const MAX_HEIGHT = 640;
@@ -108,7 +80,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Maximum number of characters allowed in url
 	 * @constant int MAX_CHARACTERS
 	 */
-	const MAX_CHARACTERS = 2048; 
+	const MAX_CHARACTERS = 2048;
 
 	/**
 	 * Set center
@@ -153,7 +125,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Set zoom
 	 * @access public
 	 * @param string / int / float
-	 * @return boolean true
+	 * @return int
 	 * @link http://code.google.com/apis/maps/documentation/staticmaps/#Zoomlevels
 	 */
 	public function setZoom($zoom){
@@ -165,10 +137,9 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Set size
-	 *
 	 * @access public
 	 * @param string / array
-	 * @return void
+	 * @return string / boolean
 	 * @link http://code.google.com/apis/maps/documentation/staticmaps/#Imagesizes
 	 */
 	public function setSize($size, $width = null, $height = null){
@@ -191,8 +162,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 			}
 		}
 		if($width && $height){
-			$width = abs(intval($width));	
-			$height = abs(intval($height));	
+			$width = abs(intval($width));
+			$height = abs(intval($height));
 			if($width > 0 && $height > 0){
 				if($width < self::MAX_HEIGHT && $height < self::MAX_HEIGHT){
 					$size = $width.'x'.$height;
@@ -201,13 +172,12 @@ class GoogleMapsImageApiHelper extends AppHelper {
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set scale
-	 *
 	 * @access public
 	 * @param string / int / float $scale
 	 * @return int / boolean
@@ -217,18 +187,17 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 		// @todo add options for Premium License
 		// '/^[124]{1}$/'
-		// if($parameters['map']['size'] != 4 || $this->license == 'Premium')	
+		// if($parameters['map']['size'] != 4 || $this->license == 'Premium')
 		$scale = abs(intval($scale));
 		if(preg_match('/^[12]$/', $scale)){
-			$this->parameters['scale'] = $scale;	
+			$this->parameters['scale'] = $scale;
 			return $scale;
 		}
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set Image Format
-	 *
 	 * @access public
 	 * @param string $format
 	 * @return string / boolean
@@ -243,9 +212,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set Map Types
-	 *
 	 * @access public
 	 * @param string $maptype
 	 * @return string / boolean
@@ -260,9 +228,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set language
-	 *
 	 * @access public
 	 * @param string $language
 	 * @return string / boolean
@@ -280,9 +247,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set markerStyles
-	 *
 	 * @access public
 	 * @param array $markerStyles
 	 * @param int $index
@@ -293,7 +259,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		$markerStylesArray = array();
 		if(is_array($markerStyles)){
 			foreach($markerStyles as $key => $value){
-				if($key == 'size'){	
+				if($key == 'size'){
 					$size = strtolower($value);
 					if(preg_match('/(tiny|mid|small)/', $size)){
 						$markerStylesArray['size'] = $size;
@@ -327,7 +293,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set marker
 	 *
 	 * @access public
@@ -344,7 +310,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 		$markerArray = array();
 
-		// location	
+		// location
 		if(!empty($marker['location'])){
 			// Address
 			if(is_string($marker['location'])){
@@ -368,15 +334,15 @@ class GoogleMapsImageApiHelper extends AppHelper {
 					}
 				}
 			}
-			
+
 		}
 		// icon
 		// @todo check if valid image URL
 		if(!empty($marker['icon'])){
-			$markerArray['icon'] = urlencode($marker['icon']);	
+			$markerArray['icon'] = urlencode($marker['icon']);
 		}
-		
-		// set parameter and return	
+
+		// set parameter and return
 		if(!empty($markerArray['location'])){
 			$this->parameters['markers'][$index]['markers'][] = $markerArray;
 			return $markerArray;
@@ -385,9 +351,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set markers
-	 *
 	 * @access public
 	 * @param array $markers
 	 * @return array / boolean
@@ -415,9 +380,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set pathStyles
-	 *
 	 * @access public
 	 * @param array $pathStyles
 	 * @param int $index
@@ -462,14 +426,14 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set path
-	 *
 	 * @access public
 	 * @param array $path
 	 * @return array / boolean
 	 * @link http://code.google.com/apis/maps/documentation/staticmaps/#Paths
 	 * @todo check if path has at least two points
+	 * @todo encoded polylines
 	 */
 	public function setPath($path, $index = 0){
 		$pathArray = array();
@@ -513,14 +477,14 @@ class GoogleMapsImageApiHelper extends AppHelper {
 			return $pathString;
 		}
 		return false;
-		
+
 		/**
 		 * @todo
 		 * Encoded polylines
 		 */
 	}
 
-	/** 
+	/**
 	 * Set paths
 	 *
 	 * @access public
@@ -533,7 +497,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		if(is_array($paths)){
 			if(!empty($paths['pathStyles'])){
 				if($return = $this->setPathStyles($paths['pathStyles'], $index)){
-					$pathsArray['pathStyles'] = $return;	
+					$pathsArray['pathStyles'] = $return;
 				}
 			}
 			if(!empty($paths['paths'])){
@@ -550,9 +514,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set visible
-	 *
 	 * @access public
 	 * @param array $visible
 	 * @return array / boolean
@@ -572,13 +535,13 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 
-	/** 
+	/**
 	 * Set style
-	 *
 	 * @access public
 	 * @param array $style
 	 * @return array / boolean
 	 * @link http://code.google.com/apis/maps/documentation/staticmaps/#StyledMaps
+	 * @todo Check feature
 	 */
 	public function setStyle($style){
 		if(is_array($style)){
@@ -644,10 +607,9 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Set sensor
-	 *
 	 * @access public
 	 * @param boolean / string $sensor
-	 * @return boolean
+	 * @return string
 	 * @link http://code.google.com/apis/maps/documentation/staticmaps/#Sensor
 	 */
 	public function setSensor($sensor){
@@ -663,24 +625,24 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Set parameters
-	 *
 	 * @access public
 	 * @param array $parameters
-	 * @return void
+	 * @return array
+	 * @todo check if markers and paths has multiple or just one record
 	 */
 	public function setParameters($parameters){
 		$returnArray = array();
 		foreach($this->featuredParameters as $parameter){
 			if(!empty($parameters[$parameter])){
 				// create functionname according to parametername
-				$func = 'set'.ucwords($parameter);		
+				$func = 'set'.ucwords($parameter);
 				// @todo check if markers and paths has multiple or just one record
 				if($parameter == 'markers'){
 					$markersArray = array();
 					$index = 0;
 					foreach($parameters['markers'] as $markers){
 						if($return = $this->$func($markers, $index)){
-							$markersArray[] = $return;	
+							$markersArray[] = $return;
 						}
 						$index++;
 					}
@@ -693,7 +655,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 					$index = 0;
 					foreach($parameters['paths'] as $paths){
 						if($return = $this->$func($paths, $index)){
-							$pathsArray[] = $return;	
+							$pathsArray[] = $return;
 						}
 						$index++;
 					}
@@ -714,10 +676,9 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Return parameter
 	 * Return paramater if set else return null
-	 *
 	 * @access public
 	 * @param string $key
-	 * @return string / null
+	 * @return string / array / null
 	 */
 	public function getParameter($key){
 		if(!empty($this->parameters[$key])){
@@ -728,7 +689,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Return parameters array
-	 *
 	 * @access public
 	 * @return array
 	 */
@@ -738,8 +698,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Reset parameters array
-	 *
 	 * @access public
+	 * @return void
 	 */
 	public function resetParameters(){
 		$this->parameters = array(
@@ -750,7 +710,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Check if to be generated image will be valid
 	 * Some parameters are required. This function checks if these are set.
-	 *
 	 * @access public
 	 * @return boolean
 	 */
@@ -768,7 +727,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Check if string does not exceed max number of characters
-	 *
 	 * @access private
 	 * @param string $url
 	 * @return boolean
@@ -781,8 +739,8 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	}
 
 	/**
-	 * Get map
-	 *
+	 * Static map
+	 * Return output url or image
 	 * @access public
 	 * @param array $parameters
 	 * @param array $htmlAttributes
@@ -798,13 +756,13 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		if(is_array($parameters)){
 			$this->setParameters($parameters);
 		}
-		// check if valid paramters and return empty string if not	
+		// check if valid paramters and return empty string if not
 		if($checkIsValid && !$this->isValidMap()){
 			return $this->output('');
 		}
 		// return map
 		else{
-			$url = $this->baseUrl.$this->generateParametersString();	
+			$url = $this->baseUrl.$this->generateParametersString();
 			if($checkIsValid && !$this->isValidUrl($url)){
 				return $this->output('');
 			}
@@ -819,8 +777,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Generate parameters
-	 *
-	 * @access public
+	 * @access private
 	 * @return string
 	 */
 	private function generateParametersString(){
@@ -832,7 +789,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 					foreach($this->parameters['markers'] as $markers){
 						$str = '&markers=';
 						if(!empty($markers['markerStyles'])){
-							
+
 							$str .= $markers['markerStyles'].'%7C';
 						}
 						foreach($markers['markers'] as $marker){
@@ -857,7 +814,7 @@ class GoogleMapsImageApiHelper extends AppHelper {
 							$str .= $paths['pathStyles'].'%7C';
 						}
 						foreach($paths['paths'] as $path){
-							$str .= $path.'%7C';	
+							$str .= $path.'%7C';
 						}
 						// remove trailing urlencode pipe (%7C)
 						$str = preg_replace('/%7C$/', '', $str);
@@ -868,14 +825,14 @@ class GoogleMapsImageApiHelper extends AppHelper {
 					$str = '&style=';
 					foreach($this->parameters['style'] as $key => $value){
 						if($key == 'feature'){
-							$str .= 'feature:'.$value.'%7C';	
+							$str .= 'feature:'.$value.'%7C';
 						}
 						if($key == 'element'){
-							$str .= 'element:'.$value.'%7C';	
+							$str .= 'element:'.$value.'%7C';
 						}
 						if($key == 'rules'){
 							foreach($value as $rule){
-								$str .= $rule.'%7C';	
+								$str .= $rule.'%7C';
 							}
 						}
 					}
@@ -898,13 +855,12 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Clean latitude
 	 * Returns latitude as allowed by Google Maps Image API
 	 * Value between -90 and 90 width max. 6 digits precision
-	 *
 	 * @access private
 	 * @param float $latitude
 	 * @return float
 	 */
 	private function cleanLatitude($latitude){
-		$latitude = round($latitude, 6);	
+		$latitude = round($latitude, 6);
 		// set limits of 90 - -90 for latitude
 		$latitude = $latitude > 90 ? 90 : $latitude;
 		$latitude = $latitude < -90 ? -90 : $latitude;
@@ -915,13 +871,12 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Clean longitude
 	 * Returns longitude as allowed by Google Maps Image API
 	 * Value between -180 and 180 with max. 6 digits precision
-	 *
 	 * @access private
 	 * @param float $longitude
 	 * @return float
 	 */
 	private function cleanLongitude($longitude){
-		$longitude = round($longitude, 6);	
+		$longitude = round($longitude, 6);
 		$longitude = fmod($longitude, 180);
 		return $longitude;
 	}
@@ -929,7 +884,6 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Is color
 	 * Checks if color is valid HEX color (0xFED012) or a HTML string color
-	 *
 	 * @access private
 	 * @param string $color
 	 * @param boolean $name
