@@ -895,10 +895,10 @@ class GoogleMapsImageHelper extends AppHelper {
 		if($name && preg_match('/^(black|brown|green|purple|yellow|blue|gray|orange|red|white)$/', $color)){
 			return true;
 		}
-		if($hex6 && preg_match('/^0x[0-9a-f]{6}$/i', $color)){
+		if($hex6 && preg_match('/^0x[0-9a-fA-F]{6}$/', $color)){
 			return true;
 		}
-		if($hex8 && preg_match('/^0x[0-9a-f]{8}$/i', $color)){
+		if($hex8 && preg_match('/^0x[0-9a-fA-F]{8}$/', $color)){
 			return true;
 		}
 		return false;
