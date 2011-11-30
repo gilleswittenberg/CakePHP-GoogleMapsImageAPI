@@ -1,7 +1,7 @@
 <?php
 /**
- * CakePHP GoogleMapsImageAPI Helper
- * CakePHP GoogleMapsImageAPI Helper for Static Maps
+ * CakePHP GoogleMapsImage Helper
+ * CakePHP GoogleMapsImage Helper for Static Maps
  * Requires: CakePHP 1.3, PHP 5.2
  *
  * @package helpers
@@ -13,7 +13,7 @@
  * @todo Make CakePHP 2.0 ready
  * @todo Add support for Premium License
  */
-class GoogleMapsImageApiHelper extends AppHelper {
+class GoogleMapsImageHelper extends AppHelper {
 
 	/**
 	 * CakePHP Basic Helpers Html, Javascript
@@ -25,17 +25,17 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Static Google Maps base-url
 	 * @var string
-	 * @access private
+	 * @access protected
 	 */
-	private $baseUrl = 'http://maps.google.com/maps/api/staticmap';
+	protected $baseUrl = 'http://maps.google.com/maps/api/staticmap';
 
 	/**
 	 * Featured Parameters
 	 * URL Parameters available for Google Maps Image API
-	 * @access private
+	 * @access protected
 	 * @var array
 	 */
-	private $featuredParameters = array(
+	protected $featuredParameters = array(
 		'center',
 		'zoom',
 		'size',
@@ -55,9 +55,9 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Finally a check will be made to see if required parameters are set.
 	 * Parameter sensor default set to false.
 	 * @var array
-	 * @access private
+	 * @access protected
 	 */
-	private $parameters = array(
+	protected $parameters = array(
 		'sensor' => 'false'
 	);
 
@@ -727,11 +727,11 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Check if string does not exceed max number of characters
-	 * @access private
+	 * @access protected
 	 * @param string $url
 	 * @return boolean
 	 */
-	private function isValidUrl($url){
+	protected function isValidUrl($url){
 		if(strlen($url) <= self::MAX_CHARACTERS){
 			return true;
 		}
@@ -777,10 +777,10 @@ class GoogleMapsImageApiHelper extends AppHelper {
 
 	/**
 	 * Generate parameters
-	 * @access private
+	 * @access protected
 	 * @return string
 	 */
-	private function generateParametersString(){
+	protected function generateParametersString(){
 		$url = '';
 		foreach($this->featuredParameters as $parameter){
 			if(!empty($this->parameters[$parameter])){
@@ -855,11 +855,11 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Clean latitude
 	 * Returns latitude as allowed by Google Maps Image API
 	 * Value between -90 and 90 width max. 6 digits precision
-	 * @access private
+	 * @access protected
 	 * @param float $latitude
 	 * @return float
 	 */
-	private function cleanLatitude($latitude){
+	protected function cleanLatitude($latitude){
 		$latitude = round($latitude, 6);
 		// set limits of 90 - -90 for latitude
 		$latitude = $latitude > 90 ? 90 : $latitude;
@@ -871,11 +871,11 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	 * Clean longitude
 	 * Returns longitude as allowed by Google Maps Image API
 	 * Value between -180 and 180 with max. 6 digits precision
-	 * @access private
+	 * @access protected
 	 * @param float $longitude
 	 * @return float
 	 */
-	private function cleanLongitude($longitude){
+	protected function cleanLongitude($longitude){
 		$longitude = round($longitude, 6);
 		$longitude = fmod($longitude, 180);
 		return $longitude;
@@ -884,14 +884,14 @@ class GoogleMapsImageApiHelper extends AppHelper {
 	/**
 	 * Is color
 	 * Checks if color is valid HEX color (0xFED012) or a HTML string color
-	 * @access private
+	 * @access protected
 	 * @param string $color
 	 * @param boolean $name
 	 * @param boolean $hex6
 	 * @param boolean $hex8
 	 * @return boolean
 	 */
-	private function isValidColor($color, $name = true, $hex8 = true, $hex6 = true){
+	protected function isValidColor($color, $name = true, $hex8 = true, $hex6 = true){
 		if($name && preg_match('/^(black|brown|green|purple|yellow|blue|gray|orange|red|white)$/', $color)){
 			return true;
 		}
@@ -904,4 +904,3 @@ class GoogleMapsImageApiHelper extends AppHelper {
 		return false;
 	}
 }
-?>
