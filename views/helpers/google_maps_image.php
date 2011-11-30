@@ -747,7 +747,7 @@ class GoogleMapsImageHelper extends AppHelper {
 	 * @param boolean $createImage
 	 * @return string
 	 */
-	public function staticMap($parameters = null, $htmlAttributes = null, $createImage = false, $checkIsValid = true, $resetParameters = false){
+	public function map($parameters = null, $htmlAttributes = null, $createImage = false, $checkIsValid = true, $resetParameters = false){
 		// reset parameters
 		if($resetParameters){
 			$this->resetParameters();

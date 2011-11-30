@@ -363,18 +363,18 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 
 	public function testStaticMap(){
 		// non-valid map
-		$this->assertEqual($this->GoogleMapsImage->staticMap(), '');
-		$this->assertEqual($this->GoogleMapsImage->staticMap(array(
+		$this->assertEqual($this->GoogleMapsImage->map(), '');
+		$this->assertEqual($this->GoogleMapsImage->map(array(
 			'size' => '500x400',
 		)),
 		'');
 		// no validity check
-		$this->assertEqual($this->GoogleMapsImage->staticMap(array(
+		$this->assertEqual($this->GoogleMapsImage->map(array(
 			'size' => '500x400',
 		), null, false, false),
 		'http://maps.google.com/maps/api/staticmap?size=500x400&sensor=false');
 		// createImage = false
-		$this->assertEqual($this->GoogleMapsImage->staticMap(array(
+		$this->assertEqual($this->GoogleMapsImage->map(array(
 			'size' => '500x400',
 			'center' => array(
 				'latitude' => 60.556677,
@@ -383,7 +383,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		)),
 		'http://maps.google.com/maps/api/staticmap?center=60.556677,20.123456&size=500x400&sensor=false');
 		// createImage = true, including htmlAttributes
-		$this->assertEqual($this->GoogleMapsImage->staticMap(array(
+		$this->assertEqual($this->GoogleMapsImage->map(array(
 			'size' => '500x400',
 			'center' => array(
 				'latitude' => 60.556677,
@@ -393,7 +393,7 @@ class GoogleMapsApiImageTest extends CakeTestCase {
 		'<img src="http://maps.google.com/maps/api/staticmap?center=60.556677,20.123456&size=500x400&sensor=false" alt="alttext" class="google-maps" />');
 		// complex map
 		$this->GoogleMapsImage->resetParameters();
-		$this->assertEqual($this->GoogleMapsImage->staticMap(array(
+		$this->assertEqual($this->GoogleMapsImage->map(array(
 			'size' => array(
 				'width' => 500,
 				'height' => 320
