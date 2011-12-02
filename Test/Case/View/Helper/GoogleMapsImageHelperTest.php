@@ -1,19 +1,17 @@
 <?php
+App::uses('GoogleMapsImageHelper', 'GoogleMaps.View/Helper');
+App::uses('HtmlHelper', 'View/Helper');
+App::uses('View', 'View');
 
-//Import the helper to be tested.
-//If the tested helper is using some other helper, like Html,
-//it should be imported in this line, and instantialized in startTest().
-App::import('Helper', 'GoogleMapsImage.GoogleMapsImage');
-App::import('Helper', 'Html');
-
-class GoogleMapsApiImageTest extends CakeTestCase {
+class GoogleMapsImageHelperTest extends CakeTestCase {
 
 	protected $baseUrl = 'http://maps.google.com/maps/api/staticmap';
 
-	//Here we instantiate our helper, and all other helpers we need.
-	public function startTest(){
-		$this->GoogleMapsImage = new GoogleMapsImageHelper();
-		$this->GoogleMapsImage->Html = new HtmlHelper();
+	public function setUp(){
+		parent::setUp();
+		@$view = new View();
+		$this->GoogleMapsImage = new GoogleMapsImageHelper($view);
+		$this->GoogleMapsImage->Html = new HtmlHelper($view);
 	}
 
 	public function testSetCenter(){

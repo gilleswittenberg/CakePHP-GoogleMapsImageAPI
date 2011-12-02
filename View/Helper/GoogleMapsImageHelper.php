@@ -13,6 +13,7 @@
  * @todo Make CakePHP 2.0 ready
  * @todo Add support for Premium License
  */
+App::uses('AppHelper', 'View/Helper');
 class GoogleMapsImageHelper extends AppHelper {
 
 	/**
